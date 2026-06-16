@@ -3,7 +3,7 @@
 document.addEventListener('click', (e) => {
   const wall = document.querySelector('.wall');
 
-  if (e.target.className !== 'wall') {
+  if (!wall || !wall.contains(e.target)) {
     return;
   }
 
@@ -11,8 +11,13 @@ document.addEventListener('click', (e) => {
   const posibleWidth = wall.clientWidth - spider.clientWidth;
   const posibleHeight = wall.clientHeight - spider.clientHeight;
 
-  const positionX = e.offsetX - spider.clientWidth / 2;
-  const positionY = e.offsetY - spider.clientHeight / 2;
+  const wallRect = wall.getBoundingClientRect();
+
+  const clickXInWall = e.clientX - wallRect.left;
+  const clickYInWall = e.clientY - wallRect.top;
+
+  const positionX = clickXInWall - spider.clientWidth / 2;
+  const positionY = clickYInWall - spider.clientHeight / 2;
 
   const spiderX = Math.max(Math.min(positionX, posibleWidth), 0);
   const spiderY = Math.max(Math.min(positionY, posibleHeight), 0);
